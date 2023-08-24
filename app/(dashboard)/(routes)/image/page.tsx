@@ -24,8 +24,10 @@ import {
 } from "@/components/ui/select";
 import { Card, CardFooter } from "@/components/ui/card";
 import Image from "next/image";
+import { useProModal } from "@/hooks/use-pro-model";
 
 const ImagePage = () => {
+  const proModal = useProModal();
   const [images, setImages] = useState<string[]>([]);
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -51,8 +53,9 @@ const ImagePage = () => {
 
       form.reset();
     } catch (error: any) {
-      //TODO: Open Pro Model
-      console.log(error);
+      if (error?.response?.status === 403) {
+        proModal.onOpen();
+      }
     } finally {
       router.refresh();
     }
