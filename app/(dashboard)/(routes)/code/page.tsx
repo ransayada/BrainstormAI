@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ChatCompletionRequestMessage } from "openai";
 import ReactMarkdown from "react-markdown";
 
-import { formSchema } from "./constans";
+import { formSchema } from "./constants";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -100,7 +100,7 @@ const CodePage = () => {
             </div>
           )}
           {messages.length === 0 && !isLoading && (
-            <Empty label="No conversation started yet" />
+            <Empty label="No code generated yet" />
           )}
           <div className="flex flex-col-reverse gap-y-4 ">
             {messages.map((message) => (
