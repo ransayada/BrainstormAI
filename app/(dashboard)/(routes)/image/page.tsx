@@ -33,7 +33,7 @@ const ImagePage = () => {
     defaultValues: {
       prompt: "",
       amount: "4",
-      resolution: "512x512",
+      resolution: "256x256",
     },
   });
 
