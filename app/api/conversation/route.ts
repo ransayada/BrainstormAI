@@ -2,6 +2,7 @@ import { checkApiLimit, increaseApiLimit } from '@/lib/api-limit';
 import { auth } from '@clerk/nextjs';
 import { NextResponse } from 'next/server';
 import {Configuration,OpenAIApi,} from 'openai';
+import { checkSubscription } from '@/lib/subscription';
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY 
@@ -26,7 +27,8 @@ export async function POST(req: Request){
         }
 
         const freeTrail= await checkApiLimit();
-        if(!freeTrail){
+        const isPro = await checkSubscription();
+        if(!freeTrail && !isPro){
             return new NextResponse("Free trail as expired",{status: 403});
         }
         const response = await openai.createChatCompletion({

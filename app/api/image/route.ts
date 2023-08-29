@@ -2,6 +2,8 @@ import { auth } from '@clerk/nextjs';
 import { NextResponse } from 'next/server';
 import {Configuration,OpenAIApi} from 'openai';
 import { checkApiLimit, increaseApiLimit } from '@/lib/api-limit';
+import { checkSubscription } from '@/lib/subscription';
+
 
 
 const configuration = new Configuration({
@@ -32,7 +34,9 @@ export async function POST(req: Request){
             return new NextResponse("Resolution is required",{status: 400});
         }
         const freeTrail= await checkApiLimit();
-        if(!freeTrail){
+        const isPro = await checkSubscription();
+
+        if(!freeTrail && !isPro){
             return new NextResponse("Free trail as expired",{status: 403});
         }
 

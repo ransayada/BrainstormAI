@@ -2,6 +2,8 @@ import { auth } from '@clerk/nextjs';
 import { NextResponse } from 'next/server';
 import Replicate from "replicate";
 import { checkApiLimit, increaseApiLimit } from '@/lib/api-limit';
+import { checkSubscription } from '@/lib/subscription';
+
 
 
 const replicate = new Replicate({
@@ -23,7 +25,9 @@ export async function POST(req: Request){
             return new NextResponse("Messages are required",{status: 400});
         }
         const freeTrail= await checkApiLimit();
-        if(!freeTrail){
+        const isPro = await checkSubscription();
+
+        if(!freeTrail &&!isPro){
             return new NextResponse("Free trail as expired",{status: 403});
         }
 
