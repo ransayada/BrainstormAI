@@ -45,7 +45,9 @@ export async function POST(req: Request){
             n: parseInt(amount,10),
             size: resolution
         });
-        await increaseApiLimit();
+        if(!isPro){
+  await increaseApiLimit();
+}
         return NextResponse.json(response.data.data);
     }
     catch(error){

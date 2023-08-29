@@ -42,7 +42,9 @@ export async function POST(req: Request){
             model: "gpt-3.5-turbo",
             messages:[instructionMessage,...messages],
         });
-        await increaseApiLimit();
+        if(!isPro){
+  await increaseApiLimit();
+}
 
         return NextResponse.json(response.data.choices[0].message);
     }
